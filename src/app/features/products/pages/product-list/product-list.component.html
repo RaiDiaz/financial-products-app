@@ -1,66 +1,75 @@
-<div class="container">
+<div>
   <h1>Listado de Productos Financieros</h1>
 
   <div class="search-container">
     <input type="text" placeholder="Buscar..." [formControl]="searchControl">
     <div>
-      <button [routerLink]="['/add']">Agregar Producto</button>
+      <button [routerLink]="['/add']" class="confirm">Agregar</button>
     </div>
   </div>
 
-  <div *ngIf="loading">Cargando productos...</div>
+  <div class="card">
+    <div *ngIf="loading">Cargando productos...</div>
 
-  <table *ngIf="!loading" class="product-table">
-    <thead>
-      <tr>
-        <th>Logo</th>
-        <th>Nombre del producto</th>
-        <th>Descripción</th>
-        <th>Fecha de liberación</th>
-        <th>Fecha de reestructuración</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngIf="filteredProducts.length === 0">
-        <td colspan="5" class="no-data">No existen productos registrados</td>
-      </tr>
-      <tr *ngFor="let product of paginatedProducts">
-        <td>
-          <img *ngIf="product.logo" [src]="product.logo" alt="Logo" width="50">
-        </td>
-        <td>{{ product.name }}</td>
-        <td>{{ product.description }}</td>
-        <td>{{ product.date_release | date: 'dd/MM/yyyy' }}</td>
-        <td>{{ product.date_revision | date: 'dd/MM/yyyy' }}</td>
-        <td style="text-align: center; position: relative;">
-            <button (click)="toggleDropdown(product.id)">⋮</button>
-            <div *ngIf="openedDropdown === product.id" class="dropdown-menu">
-                <button (click)="editProduct(product.id)">Editar</button>
-                <button (click)="confirmDelete(product.id, product.name)">Eliminar</button>
+    <table *ngIf="!loading" class="product-table">
+      <thead>
+        <tr>
+          <th>Logo</th>
+          <th>Nombre del producto</th>
+          <th>Descripción</th>
+          <th>Fecha de liberación</th>
+          <th>Fecha de reestructuración</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="filteredProducts.length === 0">
+          <td colspan="5" class="no-data">No existen productos registrados</td>
+        </tr>
+        <tr *ngFor="let product of paginatedProducts">
+          <td>
+            <img *ngIf="product.logo" [src]="product.logo" alt="Logo" width="50">
+          </td>
+          <td>{{ product.name }}</td>
+          <td>{{ product.description }}</td>
+          <td>{{ product.date_release | date: 'dd/MM/yyyy' }}</td>
+          <td>{{ product.date_revision | date: 'dd/MM/yyyy' }}</td>
+          <td style="text-align: center;">
+            <div class="dropdown-wrapper">
+              <button class="button-table-action" (click)="toggleDropdown(product.id)">⋮</button>
+              <div *ngIf="openedDropdown === product.id" class="dropdown-menu">
+                  <button (click)="editProduct(product.id)">Editar</button>
+                  <button (click)="confirmDelete(product.id, product.name)">Eliminar</button>
+              </div>
             </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
-  <div class="results-summary">
-    {{ filteredProducts.length }} Resultados
+    <div class="pagination">
+      <div class="results-summary">
+        {{ filteredProducts.length }} Resultado(s)
+      </div>
+
+      <div class="page-size-selector">
+        <label>
+          <select [(ngModel)]="pageSize" (change)="onPageSizeChange()">
+            <option *ngFor="let size of pageSizes" [value]="size">{{ size }}</option>
+          </select>
+        </label>
+      </div>
+    </div>
+
+
+    <div *ngIf="filteredProducts.length > pageSize" class="pagination">
+      <button (click)="prevPage()" [disabled]="currentPage === 1">Anterior</button>
+      Página {{ currentPage }} de {{ totalPages }}
+      <button (click)="nextPage()" [disabled]="currentPage === totalPages">Siguiente</button>
+    </div>
   </div>
 
-  <div class="page-size-selector" style="text-align: right; margin-top: 10px;">
-    <label>
-      <select [(ngModel)]="pageSize" (change)="onPageSizeChange()">
-        <option *ngFor="let size of pageSizes" [value]="size">{{ size }}</option>
-      </select>
-    </label>
-  </div>
 
-  <div *ngIf="filteredProducts.length > pageSize" class="pagination">
-    <button (click)="prevPage()" [disabled]="currentPage === 1">Anterior</button>
-    Página {{ currentPage }} de {{ totalPages }}
-    <button (click)="nextPage()" [disabled]="currentPage === totalPages">Siguiente</button>
-  </div>
  
 
 </div>
