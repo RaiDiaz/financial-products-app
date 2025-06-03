@@ -1,0 +1,30 @@
+<div class="container">
+  <h1>Listado de Productos Financieros</h1>
+
+  <div *ngIf="loading">Cargando productos...</div>
+
+  <div *ngIf="!loading && products.length === 0">No existen productos registrados</div>
+
+  <table *ngIf="products.length > 0" class="product-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Descripción</th>
+        <th>Logo</th>
+        <th>Fecha Liberación</th>
+        <th>Fecha Revisión</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of products">
+        <td>{{ product.id }}</td>
+        <td>{{ product.name }}</td>
+        <td>{{ product.description }}</td>
+        <td><img [src]="product.logo" alt="Logo" width="50"></td>
+        <td>{{ product.date_release }}</td>
+        <td>{{ product.date_revision }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
