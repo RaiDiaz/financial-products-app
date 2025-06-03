@@ -13,7 +13,7 @@ import { Product } from '../../models/product.model';
   styleUrl: './product-form.component.scss'
 })
 export class ProductFormComponent {
-form!: FormGroup;
+  form!: FormGroup;
   submitting = false;
   isEdit = false;
 
@@ -92,38 +92,52 @@ form!: FormGroup;
     };
   }
 
-submit() {
-  if (this.form.invalid) {
-    this.form.markAllAsTouched();
-    return;
-  }
-
-  const payload: Product = { ...(this.form.getRawValue() as Product) };
-
-  this.submitting = true;
-
-  let request;
-
-  if (this.isEdit) {
-    const { id, ...rest } = payload;
-    request = this.productService.updateProduct(id, rest);
-  } else {
-    request = this.productService.addProduct(payload);
-  }
-
-  request.subscribe({
-    next: () => {
-      alert(this.isEdit ? 'Producto actualizado' : 'Producto creado');
-      this.router.navigate(['/']);
-    },
-    error: () => {
-      alert('Error al guardar');
-      this.submitting = false;
+  submit() {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
     }
-  });
-}
+
+    const payload: Product = { ...(this.form.getRawValue() as Product) };
+
+    this.submitting = true;
+
+    let request;
+
+    if (this.isEdit) {
+      const { id, ...rest } = payload;
+      request = this.productService.updateProduct(id, rest);
+    } else {
+      request = this.productService.addProduct(payload);
+    }
+
+    request.subscribe({
+      next: () => {
+        alert(this.isEdit ? 'Producto actualizado' : 'Producto creado');
+        this.router.navigate(['/']);
+      },
+      error: () => {
+        alert('Error al guardar');
+        this.submitting = false;
+      }
+    });
+  }
 
   reset() {
-    this.form.reset();
+    if (this.isEdit) {
+      this.form.patchValue({
+        name: '',
+        description: '',
+        logo: '',
+        date_release: '',
+        date_revision: ''
+      });
+
+    }else {
+      this.form.reset();
+    }
+    this.form.markAsPristine();
+    this.form.markAsUntouched();
+    this.submitting = false;
   }
 }

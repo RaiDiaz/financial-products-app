@@ -1,5 +1,5 @@
 <div>
-  <h1>Listado de Productos Financieros</h1>
+  <h1 class="title-view">Listado de Productos Financieros</h1>
 
   <div class="search-container">
     <input type="text" placeholder="Buscar..." [formControl]="searchControl">
@@ -68,10 +68,6 @@
       <button (click)="nextPage()" [disabled]="currentPage === totalPages">Siguiente</button>
     </div>
   </div>
-
-
- 
-
 </div>
  <!-- Modal integrado -->
 <app-confirm-modal 

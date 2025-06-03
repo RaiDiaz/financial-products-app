@@ -11,3 +11,10 @@ body {
     font-family: 'Roboto', sans-serif; // Si deseas también globalizar fuente
     color: #333;
 }
+
+.title-view, .title-form{
+  padding-bottom: 20px;
+  font-weight: 500;
+  position: relative;
+  text-align: center;
+}
