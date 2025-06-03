@@ -1,30 +1,51 @@
 <div class="container">
   <h1>Listado de Productos Financieros</h1>
 
+  <div class="search-container">
+    <input type="text" placeholder="Buscar..." [formControl]="searchControl">
+    <label>
+      Mostrar:
+      <select [(ngModel)]="pageSize" (change)="onPageSizeChange()">
+        <option *ngFor="let size of pageSizes" [value]="size">{{ size }}</option>
+      </select>
+    </label>
+  </div>
+
   <div *ngIf="loading">Cargando productos...</div>
 
-  <div *ngIf="!loading && products.length === 0">No existen productos registrados</div>
-
-  <table *ngIf="products.length > 0" class="product-table">
+  <table *ngIf="!loading" class="product-table">
     <thead>
       <tr>
-        <th>ID</th>
-        <th>Nombre</th>
-        <th>Descripción</th>
         <th>Logo</th>
-        <th>Fecha Liberación</th>
-        <th>Fecha Revisión</th>
+        <th>Nombre del producto</th>
+        <th>Descripción</th>
+        <th>Fecha de liberación</th>
+        <th>Fecha de reestructuración</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let product of products">
-        <td>{{ product.id }}</td>
+      <tr *ngIf="filteredProducts.length === 0">
+        <td colspan="5" class="no-data">No existen productos registrados</td>
+      </tr>
+      <tr *ngFor="let product of paginatedProducts">
+        <td>
+          <img *ngIf="product.logo" [src]="product.logo" alt="Logo" width="50">
+        </td>
         <td>{{ product.name }}</td>
         <td>{{ product.description }}</td>
-        <td><img [src]="product.logo" alt="Logo" width="50"></td>
-        <td>{{ product.date_release }}</td>
-        <td>{{ product.date_revision }}</td>
+        <td>{{ product.date_release | date: 'dd/MM/yyyy' }}</td>
+        <td>{{ product.date_revision | date: 'dd/MM/yyyy' }}</td>
       </tr>
     </tbody>
   </table>
+
+  <div class="results-summary">
+    {{ filteredProducts.length }} Resultados
+  </div>
+
+  <div *ngIf="filteredProducts.length > pageSize" class="pagination">
+    <button (click)="prevPage()" [disabled]="currentPage === 1">Anterior</button>
+    Página {{ currentPage }} de {{ totalPages }}
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages">Siguiente</button>
+  </div>
 </div>
