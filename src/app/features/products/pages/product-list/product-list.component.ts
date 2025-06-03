@@ -7,6 +7,7 @@ import { ReactiveFormsModule, FormControl, FormsModule } from '@angular/forms';
 import { debounceTime } from 'rxjs';
 import { ConfirmModalComponent } from 'src/app/shared/components/confirm-modal/confirm-modal.component';
 
+
 @Component({
   selector: 'app-product-list',
   standalone: true,
