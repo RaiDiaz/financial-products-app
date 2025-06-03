@@ -1,0 +1,38 @@
+@use './variables' as *;
+
+form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+label {
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+input[type="text"],
+input[type="date"],
+textarea {
+  padding: 10px;
+  border: 1px solid $color-border;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+input.ng-invalid.ng-touched,
+textarea.ng-invalid.ng-touched {
+  border-color: $color-error;
+}
+
+.error {
+  color: $color-error;
+  font-size: 12px;
+  margin-top: 4px;
+}

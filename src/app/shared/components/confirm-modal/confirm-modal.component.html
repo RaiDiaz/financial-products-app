@@ -1,0 +1,10 @@
+<div class="modal-backdrop" *ngIf="visible">
+  <div class="modal">
+    <p>{{ message }}</p>
+    <div class="separator"></div>
+    <div class="button-group">
+      <button (click)="onCancel()">Cancelar</button>
+      <button class="confirm" (click)="onConfirm()">Confirmar</button>
+    </div>
+  </div>
+</div>

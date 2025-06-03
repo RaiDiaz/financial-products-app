@@ -1,0 +1,76 @@
+<div class="container">
+  <h1>Agregar Producto</h1>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    
+    <!-- ID -->
+    <div class="form-group">
+      <label>ID:</label>
+      <input type="text" formControlName="id">
+      <div class="error" *ngIf="form.get('id')?.touched && form.get('id')?.errors">
+        <div *ngIf="form.get('id')?.errors?.['required']">El ID es requerido.</div>
+        <div *ngIf="form.get('id')?.errors?.['minlength']">Mínimo 3 caracteres.</div>
+        <div *ngIf="form.get('id')?.errors?.['maxlength']">Máximo 10 caracteres.</div>
+        <div *ngIf="form.get('id')?.errors?.['idExists']">Este ID ya existe.</div>
+      </div>
+    </div>
+
+    <!-- Nombre -->
+    <div class="form-group">
+      <label>Nombre:</label>
+      <input type="text" formControlName="name">
+      <div class="error" *ngIf="form.get('name')?.touched && form.get('name')?.errors">
+        <div *ngIf="form.get('name')?.errors?.['required']">El nombre es requerido.</div>
+        <div *ngIf="form.get('name')?.errors?.['minlength']">Mínimo 5 caracteres.</div>
+        <div *ngIf="form.get('name')?.errors?.['maxlength']">Máximo 100 caracteres.</div>
+      </div>
+    </div>
+
+    <!-- Descripción -->
+    <div class="form-group">
+      <label>Descripción:</label>
+      <textarea formControlName="description"></textarea>
+      <div class="error" *ngIf="form.get('description')?.touched && form.get('description')?.errors">
+        <div *ngIf="form.get('description')?.errors?.['required']">La descripción es requerida.</div>
+        <div *ngIf="form.get('description')?.errors?.['minlength']">Mínimo 10 caracteres.</div>
+        <div *ngIf="form.get('description')?.errors?.['maxlength']">Máximo 200 caracteres.</div>
+      </div>
+    </div>
+
+    <!-- Logo -->
+    <div class="form-group">
+      <label>Logo URL:</label>
+      <input type="text" formControlName="logo">
+      <div class="error" *ngIf="form.get('logo')?.touched && form.get('logo')?.errors">
+        <div *ngIf="form.get('logo')?.errors?.['required']">El logo es requerido.</div>
+      </div>
+    </div>
+
+    <!-- Fecha de liberación -->
+    <div class="form-group">
+      <label>Fecha de liberación:</label>
+      <input type="date" formControlName="date_release">
+      <div class="error" *ngIf="form.get('date_release')?.touched && form.get('date_release')?.errors">
+        <div *ngIf="form.get('date_release')?.errors?.['required']">Requerido.</div>
+        <div *ngIf="form.get('date_release')?.errors?.['invalidRelease']">Debe ser hoy o una fecha futura.</div>
+      </div>
+    </div>
+
+    <!-- Fecha de revisión -->
+    <div class="form-group">
+      <label>Fecha de revisión:</label>
+      <input type="date" formControlName="date_revision">
+      <div class="error" *ngIf="form.get('date_revision')?.touched && form.get('date_revision')?.errors">
+        <div *ngIf="form.get('date_revision')?.errors?.['required']">Requerido.</div>
+        <div *ngIf="form.get('date_revision')?.errors?.['invalidRevision']">Debe ser exactamente 1 año después de liberación.</div>
+      </div>
+    </div>
+
+    <!-- Botones -->
+    <div class="button-group">
+        <button type="button" (click)="reset()">Reiniciar</button>
+        <button type="submit" [disabled]="submitting">Enviar</button>
+    </div>
+
+  </form>
+</div>

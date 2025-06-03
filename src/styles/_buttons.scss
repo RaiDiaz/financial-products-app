@@ -1,0 +1,37 @@
+@use './variables' as *;
+
+.button-group {
+  grid-column: 1 / span 2;
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 20px;
+}
+
+button {
+  padding: 15px 40px;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-weight: 600;
+}
+
+button[type="submit"], button.confirm {
+  background-color: $color-button-submit;
+  color: $color-button-submit-text;
+}
+
+button[type="submit"]:hover, button.confirm:hover {
+  background-color: $color-button-submit-hover;
+}
+
+button[type="button"] {
+  background-color: $color-button-reset;
+  color: $color-button-reset-text;
+}
+
+button[type="button"]:hover {
+  background-color: $color-button-reset-hover;
+}

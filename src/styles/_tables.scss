@@ -1,0 +1,36 @@
+@use './variables' as *;
+
+.product-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+
+  thead {
+    background-color: #f1f3f5;
+  }
+
+  th, td {
+    padding: 15px 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+  }
+
+  th {
+    font-weight: 600;
+    color: #444;
+  }
+
+  td img {
+    border-radius: 50%;
+  }
+
+  .no-data {
+    text-align: center;
+    padding: 30px 0;
+    color: #999;
+    font-style: italic;
+  }
+}

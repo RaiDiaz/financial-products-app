@@ -1,34 +1,42 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { ProductsService } from '../../services/products.service';
 import { Product } from '../../models/product.model';
 import { ReactiveFormsModule, FormControl, FormsModule } from '@angular/forms';
 import { debounceTime } from 'rxjs';
+import { ConfirmModalComponent } from 'src/app/shared/components/confirm-modal/confirm-modal.component';
 
 @Component({
   selector: 'app-product-list',
-  imports: [CommonModule, RouterModule, ReactiveFormsModule, FormsModule],
+  standalone: true,
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, FormsModule, ConfirmModalComponent],
   templateUrl: './product-list.component.html',
-  styleUrl: './product-list.component.scss'
+  styleUrls: ['./product-list.component.scss']
 })
-export class ProductListComponent {
-products: Product[] = [];
-    filteredProducts: Product[] = [];
-    paginatedProducts: Product[] = [];
+export class ProductListComponent implements OnInit {
+  products: Product[] = [];
+  filteredProducts: Product[] = [];
+  paginatedProducts: Product[] = [];
 
-    searchControl = new FormControl('');
-    loading = true;
+  searchControl = new FormControl('');
+  loading = true;
+  openedDropdown: string | null = null;
 
-    pageSizes = [5, 10, 20];
-    pageSize = 5;
-    currentPage = 1;
-    totalPages = 1;
+  pageSizes = [5, 10, 20];
+  pageSize = 5;
+  currentPage = 1;
+  totalPages = 1;
 
+  productToDeleteId: string | null = null;
+  productToDeleteName: string = '';
 
-    constructor(private productsService: ProductsService) {}
+  constructor(
+    private productsService: ProductsService,
+    private router: Router
+  ) {}
 
-    ngOnInit(): void {
+  ngOnInit(): void {
     this.productsService.getProducts().subscribe({
       next: (res) => {
         this.products = res;
@@ -56,6 +64,39 @@ products: Product[] = [];
     );
     this.currentPage = 1;
     this.setupPagination();
+  }
+
+  toggleDropdown(id: string) {
+    this.openedDropdown = this.openedDropdown === id ? null : id;
+  }
+
+  editProduct(id: string) {
+    this.router.navigate(['/edit', id]);
+  }
+
+  confirmDelete(id: string, name: string) {
+    this.productToDeleteId = id;
+    this.productToDeleteName = name;
+  }
+
+  cancelDelete() {
+    this.productToDeleteId = null;
+  }
+
+  deleteProduct() {
+    if (!this.productToDeleteId) return;
+
+    this.productsService.deleteProduct(this.productToDeleteId).subscribe({
+      next: () => {
+        this.products = this.products.filter(p => p.id !== this.productToDeleteId);
+        this.filterProducts(this.searchControl.value || '');
+        this.productToDeleteId = null;
+      },
+      error: () => {
+        alert('Error al eliminar');
+        this.productToDeleteId = null;
+      }
+    });
   }
 
   onPageSizeChange() {
@@ -87,5 +128,4 @@ products: Product[] = [];
       this.updatePage();
     }
   }
-
 }

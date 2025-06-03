@@ -3,12 +3,9 @@
 
   <div class="search-container">
     <input type="text" placeholder="Buscar..." [formControl]="searchControl">
-    <label>
-      Mostrar:
-      <select [(ngModel)]="pageSize" (change)="onPageSizeChange()">
-        <option *ngFor="let size of pageSizes" [value]="size">{{ size }}</option>
-      </select>
-    </label>
+    <div>
+      <button [routerLink]="['/add']">Agregar Producto</button>
+    </div>
   </div>
 
   <div *ngIf="loading">Cargando productos...</div>
@@ -21,6 +18,7 @@
         <th>Descripción</th>
         <th>Fecha de liberación</th>
         <th>Fecha de reestructuración</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -35,6 +33,13 @@
         <td>{{ product.description }}</td>
         <td>{{ product.date_release | date: 'dd/MM/yyyy' }}</td>
         <td>{{ product.date_revision | date: 'dd/MM/yyyy' }}</td>
+        <td style="text-align: center; position: relative;">
+            <button (click)="toggleDropdown(product.id)">⋮</button>
+            <div *ngIf="openedDropdown === product.id" class="dropdown-menu">
+                <button (click)="editProduct(product.id)">Editar</button>
+                <button (click)="confirmDelete(product.id, product.name)">Eliminar</button>
+            </div>
+        </td>
       </tr>
     </tbody>
   </table>
@@ -43,9 +48,26 @@
     {{ filteredProducts.length }} Resultados
   </div>
 
+  <div class="page-size-selector" style="text-align: right; margin-top: 10px;">
+    <label>
+      <select [(ngModel)]="pageSize" (change)="onPageSizeChange()">
+        <option *ngFor="let size of pageSizes" [value]="size">{{ size }}</option>
+      </select>
+    </label>
+  </div>
+
   <div *ngIf="filteredProducts.length > pageSize" class="pagination">
     <button (click)="prevPage()" [disabled]="currentPage === 1">Anterior</button>
     Página {{ currentPage }} de {{ totalPages }}
     <button (click)="nextPage()" [disabled]="currentPage === totalPages">Siguiente</button>
   </div>
+ 
+
 </div>
+ <!-- Modal integrado -->
+<app-confirm-modal 
+  [visible]="productToDeleteId !== null"
+  [message]="'¿Está seguro que desea eliminar el producto ' + (productToDeleteName || '') + '?'"
+  (confirm)="deleteProduct()"
+  (cancel)="cancelDelete()">
+</app-confirm-modal>
