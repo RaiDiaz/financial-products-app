@@ -97,10 +97,19 @@ El proyecto está configurado con Jest para pruebas unitarias usando `jest-prese
 
 Se encuentran implementados tests unitarios iniciales para:
 
+- `app.component.spec.ts`
 - `product-list.component.spec.ts`
 - `product-form.component.spec.ts`
+- `products.service.spec.ts`
+- `confirm-modal.component.spec.ts`
 
-El proyecto está preparado para extender fácilmente los casos unitarios de lógica de negocio y validaciones de formularios.
+Para ejecutar las pruebas unitarias:
+
+```bash
+npm run test
+```
+
+El proyecto está preparado para extender fácilmente los casos unitarios de lógica de negocio, validaciones de formularios y servicios.
 
 ---
 
