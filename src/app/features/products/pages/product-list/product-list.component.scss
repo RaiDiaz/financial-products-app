@@ -11,7 +11,7 @@
   margin-top: 20px;
   overflow: visible;
   position: relative;
-  z-index: 0; // muy importante para el stacking context
+  z-index: 0;
 }
 
 .button-table-action {
@@ -40,7 +40,7 @@
   position: absolute;
   top: 100%;
   right: 0;
-  transform: translateY(5px); // lo separa visualmente
+  transform: translateY(5px);
   background: white;
   border: 1px solid #ddd;
   border-radius: 4px;

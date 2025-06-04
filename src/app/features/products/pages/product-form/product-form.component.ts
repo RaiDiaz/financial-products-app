@@ -1,9 +1,15 @@
+/**
+ * ProductFormComponent
+ * 
+ * Este componente maneja tanto la creación como la edición de productos.
+ * Incluye la inicialización del formulario, validaciones, carga de datos y lógica de envío.
+ */
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, AsyncValidatorFn, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { ProductsService } from '../../services/products.service';
-import { debounceTime, map, switchMap, of  } from 'rxjs';
+import { map, switchMap, of  } from 'rxjs';
 import { Product } from '../../models/product.model';
 
 @Component({
@@ -17,6 +23,9 @@ export class ProductFormComponent {
   submitting = false;
   isEdit = false;
 
+  /**
+   * El constructor inyecta los servicios necesarios para el manejo del formulario y navegación.
+   */
   constructor(
     private fb: FormBuilder,
     private productService: ProductsService,
@@ -24,6 +33,12 @@ export class ProductFormComponent {
     private router: Router
   ) {}
 
+  /**
+   * Al inicializar el componente:
+   * - Construye el formulario con sus validadores.
+   * - Suscribe los cambios en la fecha de lanzamiento para validar la fecha de revisión.
+   * - Verifica si se está editando un producto existente según los parámetros de la ruta.
+   */
   ngOnInit(): void {
     this.form = this.fb.group({
       id: [{value: '', disabled: false}, [Validators.required, Validators.minLength(3), Validators.maxLength(10)], [this.idExistsValidator()]],
@@ -58,6 +73,10 @@ export class ProductFormComponent {
     });
   }
 
+  /**
+   * Validador asíncrono que verifica si el ID del producto ya existe.
+   * Previene la creación de productos con IDs duplicados.
+   */
   idExistsValidator(): AsyncValidatorFn {
     return control => {
       if (!control.value) return of(null);
@@ -67,6 +86,9 @@ export class ProductFormComponent {
     };
   }
 
+  /**
+   * Validador que asegura que la fecha de lanzamiento sea hoy o en el futuro.
+   */
   releaseDateValidator() {
     return (control: AbstractControl): ValidationErrors | null => {
       if (!control.value) return null;
@@ -76,6 +98,9 @@ export class ProductFormComponent {
     };
   }
 
+  /**
+   * Validador que asegura que la fecha de revisión sea exactamente un año después de la fecha de lanzamiento.
+   */
   revisionDateValidator() {
     return (control: AbstractControl): ValidationErrors | null => {
       if (!control.value) return null;
@@ -92,6 +117,12 @@ export class ProductFormComponent {
     };
   }
 
+  /**
+   * Maneja el envío del formulario:
+   * - Valida el formulario.
+   * - Construye el payload.
+   * - Envía la solicitud de creación o actualización según el modo.
+   */
   submit() {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
@@ -123,6 +154,11 @@ export class ProductFormComponent {
     });
   }
 
+  /**
+   * Resetea los campos del formulario.
+   * - En modo edición, limpia solo los campos editables.
+   * - En modo creación, resetea el formulario completo.
+   */
   reset() {
     if (this.isEdit) {
       this.form.patchValue({

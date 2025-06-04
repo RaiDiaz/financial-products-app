@@ -1,4 +1,4 @@
-/* You can add global styles to this file, and also import other style files */
+
 @use 'styles/variables';
 @use 'styles/forms';
 @use 'styles/buttons';
@@ -6,10 +6,10 @@
 @use 'styles/responsive';
 
 body {
-    background-color: #f9fafb; // o por ejemplo #f5f5f5, si quieres un gris un poquito más notorio
+    background-color: #f9fafb;
     margin: 40px auto;
     padding: 50px;
-    font-family: 'Roboto', sans-serif; // Si deseas también globalizar fuente
+    font-family: 'Roboto', sans-serif;
     color: #333;
 }
 
