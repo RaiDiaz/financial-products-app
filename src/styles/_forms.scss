@@ -6,6 +6,12 @@ form {
   gap: 20px;
 }
 
+.form-container {
+  max-width: 1000px;
+  margin: 0px auto;
+  box-sizing: border-box;
+}
+
 .form-group {
   display: flex;
   flex-direction: column;

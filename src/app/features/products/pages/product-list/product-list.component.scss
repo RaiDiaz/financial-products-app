@@ -62,3 +62,21 @@
     }
   }
 }
+
+@media (max-width: 768px) {
+  .search-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    
+    input {
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    button {
+      width: 100%;
+      box-sizing: border-box;
+    }
+  }
+}
