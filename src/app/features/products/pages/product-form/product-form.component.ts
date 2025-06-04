@@ -92,8 +92,15 @@ export class ProductFormComponent {
   releaseDateValidator() {
     return (control: AbstractControl): ValidationErrors | null => {
       if (!control.value) return null;
+
       const today = new Date();
-      const release = new Date(control.value);
+      today.setHours(0, 0, 0, 0); // normalizamos hoy
+
+      // Parseamos bien la fecha de control para que no tenga desfase
+      const parts = control.value.split('-');
+      const release = new Date(+parts[0], +parts[1] - 1, +parts[2]);
+      release.setHours(0, 0, 0, 0); // normalizamos también
+
       return release >= today ? null : { invalidRelease: true };
     };
   }

@@ -1,3 +1,9 @@
+/**
+ * ProductListComponent
+ * 
+ * Componente encargado de listar, buscar, editar y eliminar productos.
+ * Incluye lógica de paginación, filtrado y manejo de confirmación de eliminación.
+ */
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
@@ -32,11 +38,20 @@ export class ProductListComponent implements OnInit {
   productToDeleteId: string | null = null;
   productToDeleteName: string = '';
 
+  /**
+   * Constructor que inyecta los servicios necesarios para obtener los productos y manejar la navegación.
+   */
   constructor(
     private productsService: ProductsService,
     private router: Router
   ) {}
 
+  /**
+   * Al inicializar:
+   * - Obtiene los productos desde el servicio.
+   * - Inicializa la paginación.
+   * - Suscribe al campo de búsqueda para filtrar productos de manera reactiva.
+   */
   ngOnInit(): void {
     this.productsService.getProducts().subscribe({
       next: (res) => {
@@ -57,6 +72,10 @@ export class ProductListComponent implements OnInit {
     });
   }
 
+  /**
+   * Filtra los productos en base al término de búsqueda ingresado.
+   * Actualiza la paginación luego de filtrar.
+   */
   filterProducts(searchTerm: string) {
     this.filteredProducts = this.products.filter(p =>
       p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -67,23 +86,39 @@ export class ProductListComponent implements OnInit {
     this.setupPagination();
   }
 
+  /**
+   * Controla la apertura y cierre de los dropdowns individuales para cada producto.
+   */
   toggleDropdown(id: string) {
     this.openedDropdown = this.openedDropdown === id ? null : id;
   }
 
+  /**
+   * Redirige a la página de edición para el producto seleccionado.
+   */
   editProduct(id: string) {
     this.router.navigate(['/edit', id]);
   }
 
+  /**
+   * Abre el modal de confirmación de eliminación guardando el ID y nombre del producto a eliminar.
+   */
   confirmDelete(id: string, name: string) {
     this.productToDeleteId = id;
     this.productToDeleteName = name;
   }
 
+  /**
+   * Cancela la eliminación, limpiando el ID de producto a eliminar.
+   */
   cancelDelete() {
     this.productToDeleteId = null;
   }
 
+  /**
+   * Elimina el producto seleccionado mediante el servicio.
+   * Actualiza la lista de productos y vuelve a aplicar el filtro.
+   */
   deleteProduct() {
     if (!this.productToDeleteId) return;
 
@@ -100,22 +135,34 @@ export class ProductListComponent implements OnInit {
     });
   }
 
+  /**
+   * Cambia el tamaño de página actual y reinicia la paginación.
+   */
   onPageSizeChange() {
     this.currentPage = 1;
     this.setupPagination();
   }
 
+  /**
+   * Calcula el total de páginas según el tamaño de página actual y actualiza los datos de la página.
+   */
   setupPagination() {
     this.totalPages = Math.ceil(this.filteredProducts.length / this.pageSize);
     this.updatePage();
   }
 
+  /**
+   * Actualiza los productos visibles en la página actual.
+   */
   updatePage() {
     const start = (this.currentPage - 1) * this.pageSize;
     const end = start + this.pageSize;
     this.paginatedProducts = this.filteredProducts.slice(start, end);
   }
 
+  /**
+   * Avanza a la siguiente página si es posible.
+   */
   nextPage() {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
@@ -123,6 +170,9 @@ export class ProductListComponent implements OnInit {
     }
   }
 
+  /**
+   * Retrocede a la página anterior si es posible.
+   */
   prevPage() {
     if (this.currentPage > 1) {
       this.currentPage--;
