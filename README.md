@@ -93,11 +93,14 @@ El proxy permite redirigir las llamadas `/bp/*` al backend sin problemas de CORS
 
 ## 🧪 Testing
 
-Por ahora el proyecto no contiene tests unitarios.  
-La arquitectura actual está preparada para integrar testing de:
+El proyecto está configurado con Jest para pruebas unitarias usando `jest-preset-angular` y `ts-jest`, compatible con Angular standalone architecture.
 
-- Unit tests (Karma + Jasmine)
-- End-to-End (Playwright o Cypress)
+Se encuentran implementados tests unitarios iniciales para:
+
+- `product-list.component.spec.ts`
+- `product-form.component.spec.ts`
+
+El proyecto está preparado para extender fácilmente los casos unitarios de lógica de negocio y validaciones de formularios.
 
 ---
 
@@ -110,6 +113,7 @@ La arquitectura actual está preparada para integrar testing de:
 - Proxy para entorno de desarrollo
 - Arquitectura escalable por features
 - Formulario reactivo con validaciones custom
+- **Responsive design adaptado a desktop, tablets y móviles usando media queries**
 
 ---
 
